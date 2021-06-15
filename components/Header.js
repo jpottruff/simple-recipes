@@ -8,7 +8,7 @@ export default function Header() {
         <Link href="/">
           <a className="flex md:w-1/5 title title-font font-medium items-center md:justify-start mb-4 md:mb-0">
             <Image src="/images/logo.png" width={40} height={40} alt="logo" />
-            <span class="ml-3 text-xl">Simple Recipes</span>
+            <span className="ml-3 text-xl">Simple Recipes</span>
           </a>
         </Link>
         <nav className="flex flex-wrap md:w-4/5 items-center justify-end text-base md:ml-auto">
