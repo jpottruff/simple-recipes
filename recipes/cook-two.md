@@ -1,6 +1,6 @@
 ---
 title: "Recipe Two"
-date: "May 5, 2021"
+date: "May 5 2021"
 excerpt: "And the videoscope, yeah.. I'm looking right into you. Love it, or leave it. Best there is… past, present and future! Ohhhhh yeahhhh! Yeah, I do, yeah. Ohhhh yeeeeah!!!"
 cover_image: "/images/anna-pelzer-IGfIGP5ONV0-unsplash.jpg"
 category: "Vegetarian"
