@@ -5,6 +5,7 @@ import Link from 'next/link';
 import matter from 'gray-matter';
 import Layout from '../components/Layout';
 import Recipe from '../components/Recipe';
+import { sortMostRecentDate, maxToDisplay } from '../utils';
 
 export default function HomePage({ recipes }) {
   console.log(recipes);
@@ -44,7 +45,10 @@ export async function getStaticProps() {
       frontmatter,
     };
   });
+
   return {
-    props: { recipes },
+    props: {
+      recipes: recipes.sort(sortMostRecentDate).slice(0, maxToDisplay),
+    },
   };
 }
