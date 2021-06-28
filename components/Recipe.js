@@ -16,7 +16,12 @@ export default function Recipe({ recipe }) {
         <span className="font-light text-gray-600">
           {recipe.frontmatter.date}
         </span>
-        <CategoryLabel>{recipe.frontmatter.category}</CategoryLabel>
+        <span className="flex justify-between items-center">
+          {recipe.frontmatter.category.split(',').map((cat, index) => {
+            const category = cat.trim();
+            return <CategoryLabel key={index}>{category}</CategoryLabel>;
+          })}
+        </span>
       </div>
 
       <div className="mt-2">

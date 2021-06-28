@@ -9,7 +9,7 @@ export default function CategoryLabel({ children }) {
   };
   return (
     <div
-      className={`px-2 py-1 bg-${colorKey[children]}-600 text-gray-100 font-bold rounded`}
+      className={`ml-1 px-2 py-1 bg-${colorKey[children]}-600 text-gray-100 font-bold rounded`}
     >
       <Link href={`/recipes/category/${children.toLowerCase()}`}>
         {children}
