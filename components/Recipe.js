@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import CategoryLabel from './CategoryLabel';
 
 export default function Recipe({ recipe }) {
   return (
@@ -15,7 +16,7 @@ export default function Recipe({ recipe }) {
         <span className="font-light text-gray-600">
           {recipe.frontmatter.date}
         </span>
-        <div>{recipe.frontmatter.category}</div>
+        <CategoryLabel>{recipe.frontmatter.category}</CategoryLabel>
       </div>
 
       <div className="mt-2">
