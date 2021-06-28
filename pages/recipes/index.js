@@ -5,10 +5,9 @@ import Link from 'next/link';
 import matter from 'gray-matter';
 import Layout from '../../components/Layout';
 import Recipe from '../../components/Recipe';
-import { sortMostRecentDate, maxToDisplay } from '../../utils';
+import { sortMostRecentDate } from '../../utils';
 
 export default function RecipePage({ recipes }) {
-  console.log(recipes);
   return (
     <Layout>
       <h1 className="text-5xl border-b-4 font-bold">Recipes</h1>

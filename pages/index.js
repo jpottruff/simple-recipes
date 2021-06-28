@@ -8,7 +8,6 @@ import Recipe from '../components/Recipe';
 import { sortMostRecentDate, maxToDisplay } from '../utils';
 
 export default function HomePage({ recipes }) {
-  console.log(recipes);
   return (
     <Layout>
       <h1 className="text-5xl border-b-4 font-bold">Latest Recipes</h1>
