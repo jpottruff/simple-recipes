@@ -3,28 +3,44 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 import matter from 'gray-matter';
-import Layout from '../components/Layout';
-import Recipe from '../components/Recipe';
-import { MAX_DISPLAY_HOME } from '../config';
-import { sortMostRecentDate } from '../utils';
+import Layout from '../../../components/Layout';
+import Recipe from '../../../components/Recipe';
+import { MAX_DISPLAY_PER_PAGE } from '../../../config';
+import { sortMostRecentDate } from '../../../utils';
 
-export default function HomePage({ recipes }) {
+export default function RecipePage({ recipes }) {
   return (
     <Layout>
-      <h1 className="text-5xl border-b-4 font-bold">Latest Recipes</h1>
+      <h1 className="text-5xl border-b-4 font-bold">Recipes</h1>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {recipes.map((recipe, index) => (
           <Recipe key={index} recipe={recipe} />
         ))}
       </div>
-      <Link href="/recipes">
-        <a className="block text-center border border-gray-500 text-gray-800 rounded-md py-4 my-5 transition duration-500 ease select-none hover:text-white hover:bg-gray-900 focus:outline-none focus:shadow-outline w-full">
-          All Recipes
-        </a>
-      </Link>
     </Layout>
   );
+}
+
+export async function getStaticPaths() {
+  const files = fs.readdirSync(path.join('recipes'));
+  const numPages = Math.ceil(files.length / MAX_DISPLAY_PER_PAGE);
+
+  let paths = [];
+
+  for (let i = 1; i <= numPages; i++) {
+    paths.push({
+      params: { page_index: i.toString() },
+    });
+  }
+
+  console.log(paths);
+
+  return {
+    paths,
+    /** 404 if not found */
+    fallback: false,
+  };
 }
 
 export async function getStaticProps() {
@@ -48,7 +64,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      recipes: recipes.sort(sortMostRecentDate).slice(0, MAX_DISPLAY_HOME),
+      recipes: recipes.sort(sortMostRecentDate),
     },
   };
 }
