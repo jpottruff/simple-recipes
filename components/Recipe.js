@@ -25,7 +25,7 @@ export default function Recipe({ recipe }) {
       </div>
 
       <div className="mt-2">
-        <Link href={`/blog/${recipe.slug}`}>
+        <Link href={`/recipes/${recipe.slug}`}>
           <a className="text-2xl text-gray-700 font-bold hover:underline">
             {recipe.frontmatter.title}
           </a>
