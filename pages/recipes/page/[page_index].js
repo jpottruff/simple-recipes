@@ -5,6 +5,7 @@ import Link from 'next/link';
 import matter from 'gray-matter';
 import Layout from '../../../components/Layout';
 import Recipe from '../../../components/Recipe';
+import Pagination from '../../../components/Pagination';
 import { MAX_DISPLAY_PER_PAGE } from '../../../config';
 import { sortMostRecentDate } from '../../../utils';
 
@@ -13,11 +14,15 @@ export default function RecipePage({ recipes, numPages, currentPage }) {
     <Layout>
       <h1 className="text-5xl border-b-4 font-bold">Recipes</h1>
 
+      <Pagination currentPage={currentPage} numPages={numPages}></Pagination>
+
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {recipes.map((recipe, index) => (
           <Recipe key={index} recipe={recipe} />
         ))}
       </div>
+
+      <Pagination currentPage={currentPage} numPages={numPages}></Pagination>
     </Layout>
   );
 }
