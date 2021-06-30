@@ -8,7 +8,7 @@ import Recipe from '../../../components/Recipe';
 import { MAX_DISPLAY_PER_PAGE } from '../../../config';
 import { sortMostRecentDate } from '../../../utils';
 
-export default function RecipePage({ recipes }) {
+export default function RecipePage({ recipes, numPages, currentPage }) {
   return (
     <Layout>
       <h1 className="text-5xl border-b-4 font-bold">Recipes</h1>
@@ -28,13 +28,12 @@ export async function getStaticPaths() {
 
   let paths = [];
 
+  /** Important to start at `1` here; do not _0 index_ pages */
   for (let i = 1; i <= numPages; i++) {
     paths.push({
       params: { page_index: i.toString() },
     });
   }
-
-  console.log(paths);
 
   return {
     paths,
@@ -43,7 +42,10 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }) {
+  /** Use the `params.page_index` or `1` by deafult */
+  const page = parseInt((params && params.page_index) || 1);
+
   const files = fs.readdirSync(path.join('recipes'));
 
   const recipes = files.map((filename) => {
@@ -62,9 +64,18 @@ export async function getStaticProps() {
     };
   });
 
+  const numPages = Math.ceil(files.length / MAX_DISPLAY_PER_PAGE);
+
+  /** The _0-based_ index of the first recipe on **this** page _(Exmaple: (1 - 1) * 3; `startAt = 0`)_*/
+  const startAt = (page - 1) * MAX_DISPLAY_PER_PAGE;
+  /** The _0-based_ index of the first _recipe_ on the **next** page _(Exmaple: 1 * 3; `endAt = 3`)_*/
+  const endAt = page * MAX_DISPLAY_PER_PAGE;
+  const recipesForPage = recipes.sort(sortMostRecentDate).slice(startAt, endAt);
   return {
     props: {
-      recipes: recipes.sort(sortMostRecentDate),
+      recipes: recipesForPage,
+      numPages,
+      currentPage: page,
     },
   };
 }
