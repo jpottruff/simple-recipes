@@ -3,11 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 import matter from 'gray-matter';
-import Layout from '../../../components/Layout';
-import Recipe from '../../../components/Recipe';
-import Pagination from '../../../components/Pagination';
-import { MAX_DISPLAY_PER_PAGE } from '../../../config';
-import { sortMostRecentDate } from '../../../utils';
+import Layout from '@/components/Layout';
+import Recipe from '@/components/Recipe';
+import Pagination from '@/components/Pagination';
+import { MAX_DISPLAY_PER_PAGE } from '@/config/index';
+import { sortMostRecentDate } from '@/utils/index';
 
 export default function RecipePage({ recipes, numPages, currentPage }) {
   return (

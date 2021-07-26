@@ -3,10 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 import matter from 'gray-matter';
-import Layout from '../components/Layout';
-import Recipe from '../components/Recipe';
-import { MAX_DISPLAY_HOME } from '../config';
-import { sortMostRecentDate } from '../utils';
+import Layout from '@/components/Layout';
+import Recipe from '@/components/Recipe';
+import { MAX_DISPLAY_HOME } from '@/config/index';
+import { sortMostRecentDate } from '@/utils/index';
 
 export default function HomePage({ recipes }) {
   return (
