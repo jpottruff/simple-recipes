@@ -34,7 +34,7 @@ export default function Recipe({ recipe }) {
       </div>
 
       <div className="flex justify-between items-center mt-6">
-        <Link href={`/blog/${recipe.slug}`}>
+        <Link href={`/recipes/${recipe.slug}`}>
           <a className="text-gray-900 hover:text-blue-600">Let's do it!</a>
         </Link>
         <div className="flex items-center">
