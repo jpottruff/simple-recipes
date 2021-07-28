@@ -4,7 +4,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import Layout from '@/components/Layout';
 import Recipe from '@/components/Recipe';
-import { sortMostRecentDate } from '@/utils/index';
+import { getRecipes } from '@/lib/recipes';
 
 export default function CategoryRecipePage({ recipes, categoryName }) {
   return (
@@ -54,21 +54,7 @@ export async function getStaticProps({ params: { category_name } }) {
   console.log(category_name);
   const files = fs.readdirSync(path.join('recipes'));
 
-  const recipes = files.map((filename) => {
-    const slug = filename.replace('.md', '');
-    const markdownWithMeta = fs.readFileSync(
-      path.join('recipes', filename),
-      'utf-8'
-    );
-
-    /** https://github.com/jonschlinkert/gray-matter */
-    const { data: frontmatter } = matter(markdownWithMeta);
-
-    return {
-      slug,
-      frontmatter,
-    };
-  });
+  const recipes = getRecipes();
 
   // Filter recipes by category (Accounts for possible multiple categories on a single recipe)
   const categoryRecipes = recipes
@@ -82,7 +68,7 @@ export async function getStaticProps({ params: { category_name } }) {
 
   return {
     props: {
-      recipes: categoryRecipes.sort(sortMostRecentDate),
+      recipes: categoryRecipes,
       categoryName: category_name,
     },
   };

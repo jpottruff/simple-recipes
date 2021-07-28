@@ -1,13 +1,11 @@
 /** https://github.com/vercel/next.js/discussions/12124 */
 import fs from 'fs';
 import path from 'path';
-import Link from 'next/link';
-import matter from 'gray-matter';
 import Layout from '@/components/Layout';
 import Recipe from '@/components/Recipe';
 import Pagination from '@/components/Pagination';
 import { MAX_DISPLAY_PER_PAGE } from '@/config/index';
-import { sortMostRecentDate } from '@/utils/index';
+import { getRecipes } from '@/lib/recipes';
 
 export default function RecipePage({ recipes, numPages, currentPage }) {
   return (
@@ -53,29 +51,13 @@ export async function getStaticProps({ params }) {
 
   const files = fs.readdirSync(path.join('recipes'));
 
-  const recipes = files.map((filename) => {
-    const slug = filename.replace('.md', '');
-    const markdownWithMeta = fs.readFileSync(
-      path.join('recipes', filename),
-      'utf-8'
-    );
-
-    /** https://github.com/jonschlinkert/gray-matter */
-    const { data: frontmatter } = matter(markdownWithMeta);
-
-    return {
-      slug,
-      frontmatter,
-    };
-  });
-
   const numPages = Math.ceil(files.length / MAX_DISPLAY_PER_PAGE);
 
   /** The _0-based_ index of the first recipe on **this** page _(Exmaple: (1 - 1) * 3; `startAt = 0`)_*/
   const startAt = (page - 1) * MAX_DISPLAY_PER_PAGE;
   /** The _0-based_ index of the first _recipe_ on the **next** page _(Exmaple: 1 * 3; `endAt = 3`)_*/
   const endAt = page * MAX_DISPLAY_PER_PAGE;
-  const recipesForPage = recipes.sort(sortMostRecentDate).slice(startAt, endAt);
+  const recipesForPage = getRecipes().slice(startAt, endAt);
   return {
     props: {
       recipes: recipesForPage,

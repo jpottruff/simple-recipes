@@ -1,12 +1,8 @@
-/** https://github.com/vercel/next.js/discussions/12124 */
-import fs from 'fs';
-import path from 'path';
 import Link from 'next/link';
-import matter from 'gray-matter';
 import Layout from '@/components/Layout';
 import Recipe from '@/components/Recipe';
 import { MAX_DISPLAY_HOME } from '@/config/index';
-import { sortMostRecentDate } from '@/utils/index';
+import { getRecipes } from '@/lib/recipes';
 
 export default function HomePage({ recipes }) {
   return (
@@ -28,27 +24,9 @@ export default function HomePage({ recipes }) {
 }
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(path.join('recipes'));
-
-  const recipes = files.map((filename) => {
-    const slug = filename.replace('.md', '');
-    const markdownWithMeta = fs.readFileSync(
-      path.join('recipes', filename),
-      'utf-8'
-    );
-
-    /** https://github.com/jonschlinkert/gray-matter */
-    const { data: frontmatter } = matter(markdownWithMeta);
-
-    return {
-      slug,
-      frontmatter,
-    };
-  });
-
   return {
     props: {
-      recipes: recipes.sort(sortMostRecentDate).slice(0, MAX_DISPLAY_HOME),
+      recipes: getRecipes().slice(0, MAX_DISPLAY_HOME),
     },
   };
 }
