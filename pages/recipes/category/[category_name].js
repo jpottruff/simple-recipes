@@ -4,19 +4,33 @@ import path from 'path';
 import matter from 'gray-matter';
 import Layout from '@/components/Layout';
 import Recipe from '@/components/Recipe';
+import CategoryList from '@/components/CategoryList';
 import { getRecipes } from '@/lib/recipes';
 
-export default function CategoryRecipePage({ recipes, categoryName }) {
+export default function CategoryRecipePage({
+  recipes,
+  categoryName,
+  categories,
+}) {
   return (
     <Layout>
-      <h1 className="text-5xl border-b-4 font-bold">
-        <span className="capitalize">{categoryName}</span> Recipes
-      </h1>
+      <div className="flex justify-between">
+        {/* Main Content */}
+        <div className="w-3/4 mr-10">
+          <h1 className="text-5xl border-b-4 font-bold">
+            <span className="capitalize">{categoryName}</span> Recipes
+          </h1>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {recipes.map((recipe, index) => (
-          <Recipe key={index} recipe={recipe} />
-        ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {recipes.map((recipe, index) => (
+              <Recipe key={index} recipe={recipe} />
+            ))}
+          </div>
+        </div>
+        {/* Sidebar */}
+        <div className="w-1/4">
+          <CategoryList categories={categories} />
+        </div>
       </div>
     </Layout>
   );
@@ -51,9 +65,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { category_name } }) {
-  const files = fs.readdirSync(path.join('recipes'));
-
   const recipes = getRecipes();
+
+  // Get Categories for sidebar
+  const categories = recipes
+    .map((recipe) => {
+      return recipe.frontmatter.category.split(', ');
+    })
+    .flat();
+  const uniqueCategories = [...new Set(categories)];
 
   // Filter recipes by category (Accounts for possible multiple categories on a single recipe)
   const categoryRecipes = recipes
@@ -69,6 +89,7 @@ export async function getStaticProps({ params: { category_name } }) {
     props: {
       recipes: categoryRecipes,
       categoryName: category_name,
+      categories: uniqueCategories,
     },
   };
 }
